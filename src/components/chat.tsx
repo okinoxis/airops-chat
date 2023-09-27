@@ -96,16 +96,23 @@ export default function Chat() {
             <>
                <div className={cn('pb-[200px] pt-4 md:pt-10')}>
                   {messages.length ? (
-                     <>
+                     <React.Fragment>
                         <div className="relative mx-auto max-w-2xl px-4">
-                           {messages.map((message, index) => (
-                              <div key={index}>
-                                 <ChatMessage message={message} />
-                                 {index < messages.length - 1 && (
-                                    <Separator className="my-4 md:my-8" />
-                                 )}
-                              </div>
-                           ))}
+                           <React.Fragment>
+                              {messages.map((message, index) => (
+                                 <div key={index}>
+                                    <ChatMessage
+                                       message={{
+                                          type: message.type,
+                                          message: message.message
+                                       }}
+                                    />
+                                    {index < messages.length - 1 && (
+                                       <Separator className="my-4 md:my-8" />
+                                    )}
+                                 </div>
+                              ))}
+                           </React.Fragment>
                            {stream && (
                               <>
                                  <Separator className="my-4 md:my-8" />
@@ -116,7 +123,7 @@ export default function Chat() {
                            )}
                         </div>
                         <ChatScrollAnchor trackVisibility={loading} />
-                     </>
+                     </React.Fragment>
                   ) : (
                      <EmptyScreen />
                   )}
