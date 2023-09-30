@@ -4,9 +4,10 @@
 import { cn } from '@/lib/utils'
 import { CodeBlock } from '@/components/ui/codeblock'
 import { MemoizedReactMarkdown } from '@/components/markdown'
-import {IconUser } from '@/components/ui/icons'
+import { IconUser } from '@/components/ui/icons'
 import { ChatMessageActions } from '@/components/chat-message-actions'
-
+import remarkGfm from 'remark-gfm'
+import remarkMath from 'remark-math'
 export interface ChatMessageProps {
    message: {
       type: string
@@ -32,7 +33,7 @@ export function ChatMessage({ message, ...props }: ChatMessageProps) {
                {message.type === 'User' ? (
                   <IconUser />
                ) : (
-                  <div className="flex items-center justify-center text-xs font-medium rounded-full select-none h-7 w-7 shrink-0 text-black">
+                  <div className="flex items-center justify-center text-xs font-medium rounded-full select-none h-7 w-7 shrink-0 text-white dark:text-black">
                      ao.
                   </div>
                )}
@@ -40,7 +41,7 @@ export function ChatMessage({ message, ...props }: ChatMessageProps) {
             <div className="flex-1 px-1 ml-4 space-y-2 overflow-hidden">
                <MemoizedReactMarkdown
                   className="prose break-words dark:prose-invert prose-p:leading-relaxed prose-pre:p-0"
-                  remarkPlugins={[require('remark-gfm'), require('remark-math')]}
+                  remarkPlugins={[remarkGfm, remarkMath]}
                   components={{
                      p({ children }) {
                         return <p className="mb-2 last:mb-0">{children}</p>

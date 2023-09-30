@@ -22,6 +22,7 @@ export default function Chat() {
    const [message, setMessage] = useState('')
    const [sessionId, setSessionId] = useState(null)
    const [loading, setLoading] = useState(false)
+   const abortController = new AbortController();
 
    useEffect(() => {
       // PRIVATE KEYS
@@ -39,21 +40,23 @@ export default function Chat() {
 
    // @ts-ignore
    const handleSendMessage = async event => {
-      if (airopsInstance === null || message.trim() === '') {
+      const msg = message;
+      setMessage('')
+      setLoading(true)
+      if (airopsInstance === null || msg.trim() === '') {
          return
       }
       event.preventDefault()
-      setLoading(true)
-
-      addMessage(MessageType.User, message)
+      addMessage(MessageType.User, msg)
 
       try {
          // @ts-ignore
          const response = await airopsInstance.apps.chatStream({
+            signal: abortController.signal,
             appId:
                process.env.AIROPS_APP_ID ||
                '1af76a43-a987-4a7f-83cb-c58b3a34ecb7',
-            message,
+            message: msg,
             streamCallback: ({ action, token, tool }: any) => {
                if (action === 'agent-response' && token.trim() !== '') {
                   console.log('agent-response', token)
@@ -76,7 +79,6 @@ export default function Chat() {
          setSessionId(response.sessionId)
          const result = await response.result
          console.log('result: ', result)
-         setMessage('')
       } catch (e: any) {
          setError(e.message)
       }
@@ -113,7 +115,7 @@ export default function Chat() {
                                  </div>
                               ))}
                            </React.Fragment>
-                           {stream && (
+                           {loading && (
                               <>
                                  <Separator className="my-4 md:my-8" />
                                  <ChatMessage
@@ -132,29 +134,6 @@ export default function Chat() {
                <div className="fixed inset-x-0 bottom-0 bg-gradient-to-b from-muted/10 from-10% to-muted/30 to-50%">
                   <ButtonScrollToBottom />
                   <div className="mx-auto sm:max-w-2xl sm:px-4">
-                     <div className="flex h-10 items-center justify-center">
-                        {loading ? (
-                           <Button
-                              variant="outline"
-                              // onClick={() => stop()}
-                              className="bg-background"
-                           >
-                              <IconStop className="mr-2" />
-                              Stop generating
-                           </Button>
-                        ) : (
-                           messages?.length > 0 && (
-                              <Button
-                                 variant="outline"
-                                 // onClick={() => reload()}
-                                 className="bg-background"
-                              >
-                                 <IconRefresh className="mr-2" />
-                                 Regenerate response
-                              </Button>
-                           )
-                        )}
-                     </div>
                      <div className="space-y-4 border-t bg-background px-4 py-2 shadow-lg sm:rounded-t-xl sm:border md:py-4">
                         <PromptForm
                            onSubmit={handleSendMessage}

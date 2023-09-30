@@ -18,7 +18,7 @@ export function UserMenu() {
               <div className="flex items-center justify-center text-xs font-medium uppercase rounded-full select-none h-7 w-7 shrink-0 bg-muted/50 text-muted-foreground">
                 TU
               </div>
-            <span className="ml-2">Test User</span>
+              <span className="hidden md:block ml-2">Test User</span>
           </Button>
         </DropdownMenuTrigger>
         <DropdownMenuContent sideOffset={8} align="start" className="w-[180px]">
