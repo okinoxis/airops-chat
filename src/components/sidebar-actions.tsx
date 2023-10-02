@@ -121,6 +121,7 @@ export function SidebarActions({
           <div className="space-y-1 rounded-md border p-4 text-sm">
             <div className="font-medium">{chat.title}</div>
             <div className="text-muted-foreground">
+              
               {formatDate(chat.createdAt)} · {chat.messages.length} messages
             </div>
           </div>

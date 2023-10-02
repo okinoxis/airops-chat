@@ -1,5 +1,7 @@
 'use client'
 import { Card, Title, AreaChart } from '@tremor/react'
+import { ChatMessageActions } from '../chat-message-actions'
+import ChatDashboardButton from '../chat-dashboard-button'
 
 const chartdata = [
    {
@@ -37,9 +39,12 @@ const chartdata = [
 const dataFormatter = (number: number) => {
    return '$ ' + Intl.NumberFormat('us').format(number).toString()
 }
-
-const AreaChartComponent = () => (
+type CardComponentProps = {
+   onShow: (value: boolean) => void
+}
+const AreaChartComponent : React.FC<CardComponentProps> = ({ onShow }) => (
    <Card className="dark:bg-black" >
+      <ChatDashboardButton onShow={onShow} />
       <Title>Newsletter revenue over time (USD)</Title>
       <AreaChart
          className="h-72 mt-4"

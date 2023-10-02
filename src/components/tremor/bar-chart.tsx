@@ -1,5 +1,6 @@
 'use client'
 import { Card, Title, BarChart, Subtitle } from '@tremor/react'
+import ChatDashboardButton from '../chat-dashboard-button'
 
 const chartdata = [
    {
@@ -19,9 +20,12 @@ const chartdata = [
 const dataFormatter = (number: number) => {
    return '$ ' + Intl.NumberFormat('us').format(number).toString()
 }
-
-const BarChartComponent = () => (
+type CardComponentProps = {
+   onShow: (value: boolean) => void
+}
+const BarChartComponent : React.FC<CardComponentProps> = ({ onShow }) => (
    <Card className=' dark:bg-black'>
+      <ChatDashboardButton onShow={onShow} />
       <Title>Number of species threatened with extinction (2021)</Title>
       <Subtitle>
          The IUCN Red List has assessed only a small share of the total known

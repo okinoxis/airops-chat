@@ -1,5 +1,6 @@
 'use client'
 import { Card, Title, LineChart } from '@tremor/react'
+import ChatDashboardButton from '../chat-dashboard-button'
 
 const chartdata = [
    {
@@ -33,8 +34,13 @@ const chartdata = [
 const dataFormatter = (number: number) =>
    `${Intl.NumberFormat('us').format(number).toString()}%`
 
-const LineChartComponent = () => (
+type CardComponentProps = {
+   onShow: (value: boolean) => void
+}
+
+const LineChartComponent : React.FC<CardComponentProps> = ({ onShow }) => (
    <Card className=' dark:bg-black'>
+      <ChatDashboardButton onShow={onShow} />
       <Title>Export/Import Growth Rates (1970 to 2021)</Title>
       <LineChart
          className="mt-6"
