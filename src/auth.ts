@@ -27,7 +27,7 @@ export const {
             // @ts-ignore
             token.id = profile.id
             // @ts-ignore
-            token.image = profile.avatar_url || profile.picture
+            token.image = profile.avatar_url || profile.picture || profile.photos[0]?.value || profile.image
          }
          return token
       },
